@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "food-order-app_js-mastery",
-    "slug": "food-order-app_js-mastery",
+    "name": "food-order-app",
+    "slug": "food-order-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
