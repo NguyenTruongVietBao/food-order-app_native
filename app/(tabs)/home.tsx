@@ -1,3 +1,4 @@
+import CartButton from '@/components/CartButton';
 import { images, offers } from '@/constants';
 import { Fragment } from 'react';
 import {
@@ -10,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Index() {
+export default function Home() {
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <FlatList
@@ -71,7 +72,7 @@ export default function Index() {
                 />
               </TouchableOpacity>
             </View>
-            <Text>Cart</Text>
+            <CartButton />
           </View>
         }
       />
