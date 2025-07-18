@@ -59,10 +59,10 @@ export default Sentry.wrap(function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!isAuthenticated}>
+      <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name='(auth)' />
       </Stack.Protected>
-      <Stack.Protected guard={isAuthenticated}>
+      <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen name='(tabs)' />
       </Stack.Protected>
     </Stack>

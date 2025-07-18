@@ -1,6 +1,6 @@
 import CustomButton from '@/components/CustomButton';
 import CustomInput from '@/components/CustomInput';
-import { createUser } from '@/lib/configs/user.appwrite';
+import { signUp } from '@/lib/configs/user.appwrite';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
@@ -22,7 +22,7 @@ export default function SignUp() {
       return;
     }
     try {
-      const newUser = await createUser({
+      const newUser = await signUp({
         name,
         email,
         password,

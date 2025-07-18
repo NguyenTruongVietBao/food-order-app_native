@@ -2,11 +2,7 @@ import { CreateUserParams, SignInParams } from '@/type';
 import { ID, Query } from 'react-native-appwrite';
 import { account, appwriteConfig, avatars, databases } from './appwrite';
 
-export const createUser = async ({
-  name,
-  email,
-  password,
-}: CreateUserParams) => {
+export const signUp = async ({ name, email, password }: CreateUserParams) => {
   try {
     const newAccount = await account.create(ID.unique(), email, password, name);
     if (!newAccount) {
@@ -37,14 +33,13 @@ export const createUser = async ({
     throw new Error(error.message);
   }
 };
-
 export const signIn = async ({ email, password }: SignInParams) => {
   try {
-    // try {
-    //   await account.deleteSession('current');
-    // } catch (error) {
-    //   console.error('Error deleting session', error);
-    // }
+    try {
+      await account.deleteSession('current');
+    } catch (error) {
+      console.error('Error deleting session', error);
+    }
     const newSession = await account.createEmailPasswordSession(
       email,
       password
@@ -57,7 +52,6 @@ export const signIn = async ({ email, password }: SignInParams) => {
     throw new Error(error.message);
   }
 };
-
 export const signOut = async () => {
   try {
     await account.deleteSession('current');
@@ -65,12 +59,10 @@ export const signOut = async () => {
     console.error('Error deleting session', error);
   }
 };
-
 export const getCurrentUser = async () => {
   try {
     const currentUser = await account.get();
     if (!currentUser) throw new Error('User not found');
-
     const user = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,

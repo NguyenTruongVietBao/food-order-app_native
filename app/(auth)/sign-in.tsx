@@ -11,8 +11,8 @@ export default function SignIn() {
   const { fetchAuthenticatedUser } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: 'bao@gmail.com',
+    password: '123123123',
   });
 
   const handleSignIn = async () => {
