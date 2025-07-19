@@ -23,7 +23,7 @@ SplashScreen.preventAutoHideAsync();
 export default Sentry.wrap(function RootLayout() {
   const segments = useSegments();
   console.log('Current segment', segments);
-  const { fetchAuthenticatedUser, isLoading, isAuthenticated } = useAuthStore();
+  const { isLoading, isAuthenticated } = useAuthStore();
 
   console.log('isAuthenticated', isAuthenticated);
 
@@ -36,10 +36,6 @@ export default Sentry.wrap(function RootLayout() {
   });
 
   useEffect(() => {
-    fetchAuthenticatedUser();
-  }, [fetchAuthenticatedUser]);
-
-  useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -49,7 +45,7 @@ export default Sentry.wrap(function RootLayout() {
     return null;
   }
 
-  if (isLoading) {
+  if (isLoading && !isAuthenticated) {
     return (
       <View className='flex-1 items-center justify-center'>
         <ActivityIndicator />
@@ -59,10 +55,10 @@ export default Sentry.wrap(function RootLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={isAuthenticated}>
+      <Stack.Protected guard={!isAuthenticated}>
         <Stack.Screen name='(auth)' />
       </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
+      <Stack.Protected guard={isAuthenticated}>
         <Stack.Screen name='(tabs)' />
       </Stack.Protected>
     </Stack>

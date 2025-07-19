@@ -8,12 +8,6 @@ export const signUp = async ({ name, email, password }: CreateUserParams) => {
     if (!newAccount) {
       throw new Error('Failed to create user');
     }
-
-    // try {
-    //   await account.deleteSession('current');
-    // } catch (error) {
-    //   console.error('Error deleting session', error);
-    // }
     await signIn({ email, password });
 
     const newUser = await databases.createDocument(
@@ -27,7 +21,6 @@ export const signUp = async ({ name, email, password }: CreateUserParams) => {
         avatar: avatars.getInitialsURL(name),
       }
     );
-    console.log(newUser);
     return newUser;
   } catch (error: any) {
     throw new Error(error.message);
@@ -35,11 +28,6 @@ export const signUp = async ({ name, email, password }: CreateUserParams) => {
 };
 export const signIn = async ({ email, password }: SignInParams) => {
   try {
-    try {
-      await account.deleteSession('current');
-    } catch (error) {
-      console.error('Error deleting session', error);
-    }
     const newSession = await account.createEmailPasswordSession(
       email,
       password
@@ -54,22 +42,24 @@ export const signIn = async ({ email, password }: SignInParams) => {
 };
 export const signOut = async () => {
   try {
-    await account.deleteSession('current');
-  } catch (error) {
-    console.error('Error deleting session', error);
+    const deleteSess = await account.deleteSession('current');
+    return deleteSess;
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 };
 export const getCurrentUser = async () => {
   try {
-    const currentUser = await account.get();
-    if (!currentUser) throw new Error('User not found');
-    const user = await databases.listDocuments(
+    const currentAccount = await account.get();
+    console.log(currentAccount);
+    if (!currentAccount) throw Error;
+    const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.equal('accountId', currentUser.$id)]
+      [Query.equal('accountId', currentAccount.$id)]
     );
-    if (!user) throw new Error('User not found');
-    return user.documents[0];
+    if (!currentUser) throw Error;
+    return currentUser.documents[0];
   } catch (error: any) {
     throw new Error(error.message);
   }

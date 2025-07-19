@@ -22,7 +22,7 @@ interface MenuItem {
   calories: number;
   protein: number;
   category_name: string;
-  customizations: string[]; // list of customization names
+  customizations: string[];
 }
 
 interface DummyData {

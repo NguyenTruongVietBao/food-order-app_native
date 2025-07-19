@@ -1,12 +1,12 @@
 import CustomButton from '@/components/CustomButton';
 import CustomInput from '@/components/CustomInput';
-import { signUp } from '@/lib/configs/user.appwrite';
+import useAuthStore from '@/stores/auth.store';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 
 export default function SignUp() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { signUp, isLoading } = useAuthStore();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -15,28 +15,15 @@ export default function SignUp() {
 
   const handleSignUp = async () => {
     const { name, email, password } = form;
-    setIsLoading(true);
     if (!name || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields');
-      setIsLoading(false);
       return;
     }
     try {
-      const newUser = await signUp({
-        name,
-        email,
-        password,
-      });
-      if (!newUser) {
-        Alert.alert('Error', 'Failed to create user');
-        setIsLoading(false);
-        return;
-      }
+      await signUp(name, email, password);
       Alert.alert('Success', 'Sign up successful');
     } catch (error: any) {
       Alert.alert('Error', error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
